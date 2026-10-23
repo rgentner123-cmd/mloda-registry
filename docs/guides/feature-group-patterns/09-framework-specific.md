@@ -82,6 +82,13 @@ def test_pandas_group_mean():
 Define shared logic in an abstract base class, then create framework-specific subclasses:
 
 ```python
+from abc import ABC
+
+from mloda.provider import FeatureGroup
+from mloda_plugins.compute_framework.base_implementations.pandas.dataframe import PandasDataFrame
+from mloda_plugins.compute_framework.base_implementations.polars.dataframe import PolarsDataFrame
+
+
 # base.py - shared pattern matching and input_features
 class MyFeatureBase(FeatureGroup, ABC):
     PREFIX_PATTERN = r"^.+__my_op$"

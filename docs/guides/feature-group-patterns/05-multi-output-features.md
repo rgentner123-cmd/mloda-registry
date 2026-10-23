@@ -55,7 +55,7 @@ from mloda.user import FeatureName
 
 
 def test_stats_feature():
-    assert StatsFeature.match_feature_group_criteria("value__stats", None)
+    assert StatsFeature.match_feature_group_criteria("value__stats", Options())
 
     df = pd.DataFrame({"value": [1, 2, 3, 4, 5]})
 
@@ -77,7 +77,7 @@ For 2D array outputs (embeddings, PCA):
 import numpy as np
 
 embedding = np.array([[0.1, 0.2], [0.3, 0.4]])
-result = cls.apply_naming_convention(embedding, "emb")
+result = StatsFeature.apply_naming_convention(embedding, "emb")
 # Returns: {"emb~0": array([0.1, 0.3]), "emb~1": array([0.2, 0.4])}
 ```
 
@@ -144,7 +144,7 @@ The following must hold for this to happen:
 
 `PandasEncodingFeatureGroup._add_result_to_data` ([encoding/pandas.py](https://github.com/mloda-ai/mloda/blob/main/mloda_plugins/feature_group/experimental/sklearn/encoding/pandas.py)) is the tested example ([`test_onehot_encoding_specific_column_access`](https://github.com/mloda-ai/mloda/blob/main/tests/test_plugins/feature_group/experimental/sklearn/test_encoding_feature_group/test_encoding_feature_group_integration.py)): each requested `~N` part writes only its own column,
 
-```python
+```py
 column_match = re.match(r"^(.+)~(\d+)$", feature_name)
 if column_match:
     # (real code also bounds-checks the index; elided here)
@@ -155,7 +155,7 @@ never the whole multi-column dict, so co-requested parts never collide on the sa
 
 If recomputing per part is too expensive, cache the shared result once per output base, inside the same `calculate_feature()` call:
 
-```python
+```py
 @classmethod
 def calculate_feature(cls, data: Any, features: FeatureSet) -> Any:
     computed: dict[str, Any] = {}
