@@ -34,7 +34,7 @@ The category decides your naming pattern. See [overview](01-overview.md) for the
 
 File: `mloda/community/feature_groups/data_operations/{category}/{your_op}/base.py`.
 
-```python
+```py
 from typing import Any
 from mloda.provider import FeatureChainParserMixin, FeatureGroup, FeatureSet
 from mloda.community.feature_groups.data_operations.base import assert_source_columns_present
@@ -83,7 +83,7 @@ PyArrow is the reference. Write it first; it defines correctness for everything 
 
 File: `{category}/{your_op}/pyarrow_{your_op}.py`.
 
-```python
+```py
 import pyarrow as pa
 import pyarrow.compute as pc
 from mloda_plugins.compute_framework.base_implementations.pyarrow.table import PyArrowTable
@@ -110,7 +110,7 @@ Preserve row order. Preserve NULL. Handle the empty-table case.
 
 File: `mloda/testing/feature_groups/data_operations/{category}/{your_op}/{your_op}.py`.
 
-```python
+```py
 from typing import Any
 import pytest
 from mloda.testing.feature_groups.data_operations.base import DataOpsTestBase
@@ -168,7 +168,7 @@ Each class implements `_compute` using its native primitives. For row-preserving
 
 One file per framework, all inheriting from your test base and the framework's mixin:
 
-```python
+```py
 # tests/test_pandas.py
 from typing import Any
 import pytest
@@ -200,7 +200,7 @@ No test method bodies. Everything is inherited. If the framework cannot do one o
 
 If the new op is an aggregate (or anything that consumes source values that a user might want to conditionally include), wire it up to `MaskTestMixin`:
 
-```python
+```py
 from mloda.testing.feature_groups.data_operations.mixins.mask import MaskTestMixin
 
 
